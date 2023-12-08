@@ -1,18 +1,24 @@
 package com.example.webview;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.webkit.JsResult;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 public class MyWebChromeClient extends WebChromeClient {
 
-    private Context context;
+    private Activity context;
+    private ValueCallback<Uri[]> mUploadCallbackAboveL;
+    public static final int FILECHOOSER_RESULTCODE = 200;
 
-    public MyWebChromeClient(Context context) {
+    public MyWebChromeClient(Activity context) {
         this.context = context;
     }
 
@@ -62,5 +68,14 @@ public class MyWebChromeClient extends WebChromeClient {
     public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
         return super.onJsConfirm(view, url, message, result);
     }
-    
+
+    @Override
+    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+        mUploadCallbackAboveL = filePathCallback;
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("image/*");
+        context.startActivityForResult(Intent.createChooser(i, "File Browser"), FILECHOOSER_RESULTCODE);
+        return true;
+    }
 }
