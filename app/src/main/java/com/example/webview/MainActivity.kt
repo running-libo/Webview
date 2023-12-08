@@ -15,7 +15,11 @@ class MainActivity : ComponentActivity() {
         var settings = WebViewSettings()
         settings.setSettings(webView)
 
-        webView.loadUrl("https://www.baidu.com")
+        webView.loadUrl("https://www.baidu.com")  //最简单默认加载方式
+//        webView.loadUrl("tel:18201497620")
+
+        webView.webViewClient = MyWebViewClient(this)
+        webView.webChromeClient = MyWebChromeClient(this)
     }
 
 }

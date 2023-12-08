@@ -1,5 +1,6 @@
 package com.example.webview;
 
+import android.os.Build;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -11,6 +12,8 @@ public class WebViewSettings {
 
         webSettings.setUseWideViewPort(true);  //将图片调整到适合webview的大小
         webSettings.setLoadWithOverviewMode(true); //缩放至屏幕的大小
+
+        webSettings.setTextZoom(100);//字体百分比，替代原API:setTextSize
 
         //缩放操作
         webSettings.setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
@@ -33,5 +36,14 @@ public class WebViewSettings {
         webView.clearCache(true); //清除缓存
         webView.clearHistory(); //清除历史记录
         webView.reload(); //重新加载
+    }
+
+    /**
+     * Https 加载 Http 混合模式
+     */
+    public void loadMixedContentMode(WebSettings webSettings) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
     }
 }
